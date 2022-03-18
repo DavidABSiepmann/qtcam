@@ -1,0 +1,7 @@
+*.o
+moc_*
+Qtcam
+Makefile
+.qmake.stash
+logfile
+build
