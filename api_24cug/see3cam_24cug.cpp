@@ -592,7 +592,6 @@ bool See3CAM_24CUG::setExposureCompensation(unsigned int exposureCompValue)
                  g_in_packet_buf[1] == SET_EXPOSURE_COMPENSATION_24CUG &&
                  g_in_packet_buf[6] == SET_SUCCESS)
         {
-            std::cout << "Exposure compensation value is set successfully" << std::endl;
             return true;
         }
     }

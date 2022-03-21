@@ -335,8 +335,6 @@ int uvccamera::findEconDevice(std::string parameter)
                  */
                 std::string vidPid = toLower(vidValue.append(",").append(pidValue));
                 pidVidMap.insert(std::pair<std::string, std::string>(productName, vidPid));
-                std::cout << "pidVidMap - productName: " << productName << std::endl;
-                std::cout << "pidVidMap - vidPid: " << vidPid << std::endl;
             }
         }
         udev_device_unref(dev);
@@ -542,7 +540,6 @@ bool uvccamera::initExtensionUnit(std::string cameraName)
     std::map<std::string, std::string>::iterator pidvidmapIterator;
     for (pidvidmapIterator = pidVidMap.begin(); pidvidmapIterator != pidVidMap.end(); ++pidvidmapIterator)
     {
-        std::cout << "cameraName: " << cameraName << " - pidvidmapIterator->first: " << pidvidmapIterator->first << " - pidvidmapIterator->second: " << pidvidmapIterator->second   << std::endl;
         if (cameraName.find(pidvidmapIterator->first) != std::string::npos )
         {
             originalDeviceName = pidvidmapIterator->first;
@@ -556,7 +553,6 @@ bool uvccamera::initExtensionUnit(std::string cameraName)
 
     if (hidNode == "")
     {
-        std::cout << "hidNode == \"\"";
         return false;
     }
 
@@ -574,7 +570,6 @@ bool uvccamera::initExtensionUnit(std::string cameraName)
     openNode = "";
     while (ii != cameraMap.end() && ii->first == originalDeviceName)
     {
-        std::cout << "ii->second.data(): " << ii->second.data() << "\n";
         hid_fd = open(ii->second.data(), O_RDWR | O_NONBLOCK);
         memset(buf, 0x0, sizeof(buf));
         /* Get Physical Location */
@@ -585,8 +580,6 @@ bool uvccamera::initExtensionUnit(std::string cameraName)
             return false;
         }
         std::string tempBuf = buf;
-        std::cout << "hidNode: " << hidNode;
-        std::cout << " - tempBuf: " << tempBuf << "\n";
         if (tempBuf.find(hidNode) != std::string::npos)
         {
             openNode = ii->second;
@@ -596,12 +589,6 @@ bool uvccamera::initExtensionUnit(std::string cameraName)
         close(hid_fd);
         ++ii;
     }
-
-    std::cout << "-----------------\n";
-    std::cout << "cameraName: " << cameraName << std::endl;
-    std::cout << "originalDeviceName: " << originalDeviceName << std::endl;
-
-    std::cout << "Node: " << openNode << std::endl;
 
     hid_fd = open(openNode.data(), O_RDWR | O_NONBLOCK);
     // Directly open from map value
